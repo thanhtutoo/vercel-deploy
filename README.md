@@ -6,6 +6,7 @@
   - [ ] categories
   - [ ] rating
   - [ ] price range
+  - [ ] dynamic price range filter + star rating ( need to get from products query)
 - [ ] product listing + detail page info display
 - [ ] checkout + - items features
 - [ ] unit testing + cypress ( timebox )

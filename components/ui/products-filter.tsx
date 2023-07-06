@@ -2,6 +2,7 @@
 
 import qs from "query-string";
 import { useDebounce } from "@/hooks/use-debounce";
+import { Star } from "lucide-react";
 import React, { FC, useState, useEffect, useCallback, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -26,7 +27,7 @@ const CategoryFilter: FC<{
   value: string;
   onChange: (category: string) => void;
 }> = ({ categories, value = "all", onChange }) => (
-  <div>
+  <div className="my-3">
     <label
       htmlFor="category"
       className="block text-sm font-medium text-gray-700"
@@ -37,7 +38,7 @@ const CategoryFilter: FC<{
       id="category"
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="mt-1 block w-full"
+      className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
     >
       <option key="all" value="all">
         All
@@ -128,7 +129,11 @@ const StarsFilter: FC<{
             value && star <= value ? "text-yellow-500" : "text-gray-300"
           }`}
         >
-          ★
+          <Star
+            className={
+              value && star <= value ? "fill-current text-yellow-500" : ""
+            }
+          />
         </button>
       ))}
     </div>
@@ -178,8 +183,8 @@ export const ProductsFilter: FC<FilterProps> = ({ categories, priceRange }) => {
      */
   }, [priceRange]);
 
-  console.log("filters.price", filters.price);
-  console.log("priceRange", priceRange);
+  //   console.log("filters.price", filters.price);
+  //   console.log("priceRange", priceRange);
 
   useEffect(() => {
     const query = {

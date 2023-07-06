@@ -8,7 +8,7 @@ import { getProductsPriceRange } from "@/lib/utils";
 export const revalidate = 0;
 
 const HomePage = async ({ params, searchParams }) => {
-  const products = await getProducts({ limit: 12, skip: 0, ...searchParams });
+  const products = await getProducts({ limit: 50, skip: 0, ...searchParams });
   const categories = await getCategories();
   const priceRange = getProductsPriceRange(products);
   return (
