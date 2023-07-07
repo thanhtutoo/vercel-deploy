@@ -11,6 +11,7 @@ const HomePage = async ({ params, searchParams }) => {
   const products = await getProducts({ limit: 50, skip: 0, ...searchParams });
   const categories = await getCategories();
   const priceRange = getProductsPriceRange(products);
+  console.log("products", products);
   return (
     <Container>
       <div className="space-y-10 pb-10">
