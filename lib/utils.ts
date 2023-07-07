@@ -40,3 +40,16 @@ export function filterProductsByRating(
     (product) => product.rating >= minRating && product.rating < minRating + 1
   );
 }
+
+export function filterProductsByPriceRange(
+  products: Product[],
+  priceRange: [number, number] | null
+): Product[] {
+  if (Array.isArray(priceRange)) {
+    return products.filter(
+      (product) =>
+        product.price >= priceRange[0] && product.price < priceRange[1]
+    );
+  }
+  return products;
+}

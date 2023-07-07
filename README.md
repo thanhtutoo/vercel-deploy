@@ -11,6 +11,8 @@
 - [x] checkout + - items features
 - [ ] clean up import `React.` and standardised naming/import in components
 - [ ] unit testing ( timebox )
+  - [ ] cart components
+  - [ ]
 - [ ] mobile + ui ( timebox )
 - [ ] payment gateway
 - [ ] need to set up CICD to deploy on vercel on push + tools ( precommit, eslint, coding standard ) for better maintainence ( timebox on tools)
@@ -20,3 +22,8 @@
 - [ ] pagination
 - [ ] All components, layout and templates to be developed from scratch, not
       allowed to use any off the shelf templates or packages - need to rewrite some ui components ( select dropdown ) if time permits. ( timebox )
+
+- ritesh
+  unit test - how to approach the components -
+  get feedback on what could be improved.
+  bugfix

@@ -1,3 +1,7 @@
+import {
+  filterProductsByPriceRange,
+  filterProductsByRating,
+} from "@/lib/utils";
 import { Product } from "@/types";
 import qs from "query-string";
 
@@ -6,7 +10,7 @@ interface Query {
   skip?: number;
   price?: [number, number];
   category?: string;
-  rating?: number;
+  stars?: number;
 }
 
 const getUrl = (category?: string) => {
@@ -28,9 +32,17 @@ const getProducts = async (query: Query): Promise<Product[]> => {
   const res = await fetch(url);
 
   const { products } = await res.json();
-
   if (res.ok) {
-    return products;
+    let filtered = [...products];
+    if (query.stars) {
+      filtered = filterProductsByRating(filtered, Number(query.stars));
+    }
+
+    if (Array.isArray(query.price)) {
+      filtered = filterProductsByPriceRange(filtered, query.price);
+    }
+
+    return filtered;
   } else {
     throw new Error("products api failed");
   }

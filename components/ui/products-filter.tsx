@@ -1,5 +1,4 @@
 "use client";
-
 import qs from "query-string";
 import { useDebounce } from "@/hooks/use-debounce";
 import { Star } from "lucide-react";
@@ -137,72 +136,84 @@ const ProductsFilter: FC<FilterProps> = ({ categories, priceRange }) => {
   const searchParams = useSearchParams();
   const current = qs.parse(searchParams.toString());
 
-  /**
-   * @todo use joi to add validation for query string
-   */
-  const [filters, setFilters] = useState<Filters>({
-    category: typeof current.category === "string" ? current.category : "all",
-    price: Array.isArray(current.price)
-      ? (current.price.map(Number) as PriceRangeFilterProps["value"])
-      : priceRange,
-    stars: current.stars ? Number(current.stars) : null,
-  });
-
-  let prevPriceRef = useRef(filters.price);
-
-  const handleCategoryChange = useCallback((category: string) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      category,
-    }));
-  }, []);
+  const handleCategoryChange = useCallback(
+    (category: string) => {
+      const query = {
+        category,
+      };
+      const url = qs.stringifyUrl(
+        {
+          url: window.location.href,
+          query,
+        },
+        { skipNull: true }
+      );
+      /**
+       * @todo this is triggering multiple renders.
+       */
+      router.push(url);
+    },
+    [router]
+  );
 
   const handlePriceChange = useCallback(
     (price: PriceRangeFilterProps["value"]) => {
-      setFilters((prevFilters) => ({ ...prevFilters, price }));
+      const query = {
+        ...current,
+        price,
+      };
+      const url = qs.stringifyUrl(
+        {
+          url: window.location.href,
+          query,
+        },
+        { skipNull: true }
+      );
+      /**
+       * @todo this is triggering multiple renders.
+       */
+      router.push(url);
     },
-    []
+    [current, router]
   );
 
-  const handleStarsChange = useCallback((stars: number) => {
-    setFilters((prevFilters) => ({ ...prevFilters, stars }));
-  }, []);
-
-  useEffect(() => {
-    setFilters((prevFilters) => ({ ...prevFilters, price: priceRange }));
-    /**
-     * @todo bug, this stop filters.price from updating. somehow priceRange change everytime price change?
-     */
-  }, [priceRange]);
-
-  useEffect(() => {
-    const query = {
-      ...filters,
-    };
-
-    const url = qs.stringifyUrl(
-      {
-        url: window.location.href,
-        query,
-      },
-      { skipNull: true }
-    );
-    /**
-     * @todo this is triggering multiple renders.
-     */
-    router.push(url);
-    prevPriceRef.current = filters.price;
-  }, [filters, router]);
+  const handleStarsChange = useCallback(
+    (stars: number) => {
+      const query = {
+        ...current,
+        stars,
+      };
+      const url = qs.stringifyUrl(
+        {
+          url: window.location.href,
+          query,
+        },
+        { skipNull: true }
+      );
+      /**
+       * @todo this is triggering multiple renders.
+       */
+      router.push(url);
+    },
+    [current, router]
+  );
 
   return (
     <div className="flex gap-4 mt-4">
       <CategoryFilter
         categories={categories}
-        value={filters.category}
+        value={current.category as string}
         onChange={handleCategoryChange}
       />
-      <PriceRangeFilter value={filters.price} onChange={handlePriceChange} />
-      <StarsFilter value={filters.stars} onChange={handleStarsChange} />
+      <PriceRangeFilter
+        value={
+          Array.isArray(current.price)
+            ? (current.price.map(Number) as PriceRangeFilterProps["value"])
+            : priceRange
+        }
+        onChange={handlePriceChange}
+      />
+      <StarsFilter value={Number(current.stars)} onChange={handleStarsChange} />
     </div>
   );
 };
