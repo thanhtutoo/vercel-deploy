@@ -1,27 +1,31 @@
 import Image from "next/image";
 import { toast } from "react-hot-toast";
-import { X } from "lucide-react";
+import { X, Plus, Minus } from "lucide-react";
 
 import IconButton from "@/components/ui/icon-button";
 import Currency from "@/components/ui/currency";
 import useCart from "@/hooks/use-cart";
-import { Product } from "@/types";
-
+import { CartProduct } from "@/types";
 
 interface CartItemProps {
-  data: Product;
+  data: CartProduct;
 }
 
-const CartItem: React.FC<CartItemProps> = ({
-  data
-}) => {
+const CartItem: React.FC<CartItemProps> = ({ data }) => {
   const cart = useCart();
 
   const onRemove = () => {
-    cart.removeItem(data.id);
+    cart.removeAll(data.id);
   };
 
-  return ( 
+  const onIncrease = () => {
+    cart.addItem(data);
+  };
+
+  const onDecrease = () => {
+    cart.removeItem(data.id);
+  };
+  return (
     <li className="flex py-6 border-b">
       <div className="relative h-24 w-24 rounded-md overflow-hidden sm:h-48 sm:w-48">
         <Image
@@ -37,20 +41,25 @@ const CartItem: React.FC<CartItemProps> = ({
         </div>
         <div className="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
           <div className="flex justify-between">
-            <p className=" text-lg font-semibold text-black">
-              {data.title}
-            </p>
+            <p className=" text-lg font-semibold text-black">{data.title}</p>
           </div>
 
           <div className="mt-1 flex text-sm">
-            <p className="text-gray-500">placholder</p>
-            <p className="ml-4 border-l border-gray-200 pl-4 text-gray-500">placeholder</p>
+            <p className="text-gray-500">
+              <IconButton onClick={onIncrease} icon={<Plus size={15} />} />
+            </p>
+            <p className="text-gray-500 pl-4 pt-2 font-semibold">
+              {data.quantity}
+            </p>
+            <p className="pl-4 text-gray-500">
+              <IconButton onClick={onDecrease} icon={<Minus size={15} />} />
+            </p>
           </div>
           <Currency value={data.price} />
         </div>
       </div>
     </li>
   );
-}
- 
+};
+
 export default CartItem;
