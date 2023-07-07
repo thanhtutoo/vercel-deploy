@@ -1,20 +1,15 @@
 "use client";
+import React, { FC, useState, useEffect, useCallback } from "react";
 import qs from "query-string";
-import { useDebounce } from "@/hooks/use-debounce";
-import { Star } from "lucide-react";
-import React, { FC, useState, useEffect, useCallback, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Star } from "lucide-react";
+import useDebounce from "@/hooks/use-debounce";
+import LoadingSpinner from "./spinner";
 import Select from "./select";
 
 interface PriceRangeFilterProps {
   value: [number, number];
   onChange: (value: [number, number]) => void;
-}
-
-interface Filters {
-  category: string;
-  price: PriceRangeFilterProps["value"];
-  stars: number | null;
 }
 
 interface FilterProps {
@@ -26,22 +21,33 @@ const CategoryFilter: FC<{
   categories: string[];
   value: string;
   onChange: (category: string) => void;
-}> = ({ categories, value = "all", onChange }) => (
-  <div>
-    <label
-      htmlFor="category"
-      className="block text-sm font-medium text-gray-700"
-    >
-      Category
-    </label>
-    <Select
-      options={["all", ...categories]}
-      value={value}
-      id="category"
-      onOptionSelect={(value) => onChange(value)}
-    />
-  </div>
-);
+}> = ({ categories, value = "all", onChange }) => {
+  const [isPending, startTransition] = React.useTransition();
+
+  const handleOptionSelect = (selectedValue: string) => {
+    startTransition(() => {
+      onChange(selectedValue);
+    });
+  };
+
+  return (
+    <div>
+      <label
+        htmlFor="category"
+        className="block text-sm font-medium text-gray-700"
+      >
+        Category
+      </label>
+      <Select
+        options={["all", ...categories]}
+        value={value}
+        id="category"
+        loading={isPending}
+        onOptionSelect={handleOptionSelect}
+      />
+    </div>
+  );
+};
 
 const PriceRangeFilter: FC<PriceRangeFilterProps> = ({ value, onChange }) => {
   const [localValue, setLocalValue] = useState(value);
@@ -108,28 +114,39 @@ const PriceRangeFilter: FC<PriceRangeFilterProps> = ({ value, onChange }) => {
 const StarsFilter: FC<{
   value: number | null;
   onChange: (stars: number) => void;
-}> = ({ value, onChange }) => (
-  <div>
-    <label className="block text-sm font-medium text-gray-700">Stars</label>
-    <div className="flex gap-1 mt-1">
-      {[1, 2, 3, 4, 5].map((star) => (
-        <button
-          key={star}
-          onClick={() => onChange(star)}
-          className={`text-lg cursor-pointer ${
-            value && star <= value ? "text-yellow-500" : "text-gray-300"
-          }`}
-        >
-          <Star
-            className={
-              value && star <= value ? "fill-current text-yellow-500" : ""
-            }
-          />
-        </button>
-      ))}
+}> = ({ value, onChange }) => {
+  const [isPending, startTransition] = React.useTransition();
+
+  const handleOnClick = (star: number) => {
+    startTransition(() => {
+      onChange(star);
+    });
+  };
+
+  return (
+    <div>
+      <label className="block text-sm font-medium text-gray-700">Stars</label>
+      <div className="flex gap-1 mt-3">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <button
+            key={star}
+            onClick={() => handleOnClick(star)}
+            className={`text-lg cursor-pointer ${
+              value && star <= value ? "text-yellow-500" : "text-gray-300"
+            }`}
+          >
+            <Star
+              className={
+                value && star <= value ? "fill-current text-yellow-500" : ""
+              }
+            />
+          </button>
+        ))}
+        {isPending && <LoadingSpinner />}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const ProductsFilter: FC<FilterProps> = ({ categories, priceRange }) => {
   const router = useRouter();
@@ -139,6 +156,7 @@ const ProductsFilter: FC<FilterProps> = ({ categories, priceRange }) => {
   const handleCategoryChange = useCallback(
     (category: string) => {
       const query = {
+        ...current,
         category,
       };
       const url = qs.stringifyUrl(
@@ -153,7 +171,7 @@ const ProductsFilter: FC<FilterProps> = ({ categories, priceRange }) => {
        */
       router.push(url);
     },
-    [router]
+    [current, router]
   );
 
   const handlePriceChange = useCallback(
@@ -177,26 +195,20 @@ const ProductsFilter: FC<FilterProps> = ({ categories, priceRange }) => {
     [current, router]
   );
 
-  const handleStarsChange = useCallback(
-    (stars: number) => {
-      const query = {
-        ...current,
-        stars,
-      };
-      const url = qs.stringifyUrl(
-        {
-          url: window.location.href,
-          query,
-        },
-        { skipNull: true }
-      );
-      /**
-       * @todo this is triggering multiple renders.
-       */
-      router.push(url);
-    },
-    [current, router]
-  );
+  const handleStarsChange = (stars: number) => {
+    const query = {
+      ...current,
+      stars,
+    };
+    const url = qs.stringifyUrl(
+      {
+        url: window.location.href,
+        query,
+      },
+      { skipNull: true }
+    );
+    router.push(url);
+  };
 
   return (
     <div className="flex gap-4 mt-4">

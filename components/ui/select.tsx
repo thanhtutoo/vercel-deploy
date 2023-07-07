@@ -2,15 +2,18 @@
 
 import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import ReactDOM from "react-dom";
+import LoadingSpinner from "./spinner";
 
 interface SelectProps extends React.HTMLProps<HTMLDivElement> {
   options: string[];
+  loading?: boolean;
   onOptionSelect: (value: string) => void;
 }
 
 const Select: React.FC<SelectProps> = ({
   value,
   options,
+  loading = false,
   onOptionSelect,
   ...props
 }) => {
@@ -62,9 +65,10 @@ const Select: React.FC<SelectProps> = ({
         onClick={(e) => {
           setOpen(!open);
         }}
-        className="mt-1 block w-full py-2 px-3 border capitalize border-gray-300 bg-white min-w-[180px]  rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm cursor-pointer"
+        className="mt-1 flex justify-between  w-full py-2 px-3 border capitalize border-gray-300 bg-white min-w-[180px]  rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm cursor-pointer"
       >
         {selected}
+        {loading && <LoadingSpinner size={15} />}
       </div>
       {open && (
         <div
