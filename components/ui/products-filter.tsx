@@ -82,6 +82,7 @@ const PriceRangeFilter: FC<PriceRangeFilterProps> = ({ value, onChange }) => {
     <div className="flex gap-4">
       <div>
         <label
+          data-cy-filter="min-price"
           htmlFor="priceMin"
           className="block text-sm font-medium text-gray-700"
         >
