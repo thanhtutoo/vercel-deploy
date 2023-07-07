@@ -5,6 +5,7 @@ import { useDebounce } from "@/hooks/use-debounce";
 import { Star } from "lucide-react";
 import React, { FC, useState, useEffect, useCallback, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Select from "./select";
 
 interface PriceRangeFilterProps {
   value: [number, number];
@@ -27,28 +28,19 @@ const CategoryFilter: FC<{
   value: string;
   onChange: (category: string) => void;
 }> = ({ categories, value = "all", onChange }) => (
-  <div className="my-3">
+  <div>
     <label
       htmlFor="category"
       className="block text-sm font-medium text-gray-700"
     >
       Category
     </label>
-    <select
-      id="category"
+    <Select
+      options={["all", ...categories]}
       value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-    >
-      <option key="all" value="all">
-        All
-      </option>
-      {categories.map((category, index) => (
-        <option key={index} value={category}>
-          {category}
-        </option>
-      ))}
-    </select>
+      id="category"
+      onOptionSelect={(value) => onChange(value)}
+    />
   </div>
 );
 
@@ -140,7 +132,7 @@ const StarsFilter: FC<{
   </div>
 );
 
-export const ProductsFilter: FC<FilterProps> = ({ categories, priceRange }) => {
+const ProductsFilter: FC<FilterProps> = ({ categories, priceRange }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const current = qs.parse(searchParams.toString());
@@ -183,9 +175,6 @@ export const ProductsFilter: FC<FilterProps> = ({ categories, priceRange }) => {
      */
   }, [priceRange]);
 
-  //   console.log("filters.price", filters.price);
-  //   console.log("priceRange", priceRange);
-
   useEffect(() => {
     const query = {
       ...filters,
@@ -206,7 +195,7 @@ export const ProductsFilter: FC<FilterProps> = ({ categories, priceRange }) => {
   }, [filters, router]);
 
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-4 mt-4">
       <CategoryFilter
         categories={categories}
         value={filters.category}
@@ -217,3 +206,5 @@ export const ProductsFilter: FC<FilterProps> = ({ categories, priceRange }) => {
     </div>
   );
 };
+
+export default ProductsFilter;

@@ -2,12 +2,16 @@ import getCategories from "@/actions/get-categories";
 import getProducts from "@/actions/get-products";
 import ProductList from "@/components/product-list";
 import Container from "@/components/ui/container";
-import { ProductsFilter } from "@/components/ui/products-filter";
+import ProductsFilter from "@/components/ui/products-filter";
 import { getProductsPriceRange } from "@/lib/utils";
 
 export const revalidate = 0;
 
-const HomePage = async ({ params, searchParams }) => {
+const HomePage = async ({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) => {
   const products = await getProducts({ limit: 50, skip: 0, ...searchParams });
   const categories = await getCategories();
   const priceRange = getProductsPriceRange(products);

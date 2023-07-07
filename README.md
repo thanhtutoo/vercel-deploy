@@ -6,7 +6,7 @@
   - [x] categories
   - [x] rating
   - [ ] [bugged]price range
-  - [ ] dynamic price range filter + star rating ( need to get from products query)
+  - [ ] dynamic price range filter + star rating ( need to get from products query) + filter-reset
 - [x] product listing + detail page info display
 - [x] checkout + - items features
 - [ ] clean up import `React.` and standardised naming/import in components

@@ -8,7 +8,7 @@ interface RatingProps {
 const StarRating: FC<RatingProps> = ({ rating = 0 }) => {
   const fullStars = Math.floor(rating);
 
-  const halfStars = Math.round(rating) - fullStars;
+  const halfStars = Math.ceil(rating) - fullStars;
 
   const emptyStars = 5 - fullStars - halfStars;
 
@@ -36,13 +36,13 @@ const StarRating: FC<RatingProps> = ({ rating = 0 }) => {
   }
 
   for (let i = 0; i < emptyStars; i++) {
-    stars.push(<></>);
+    stars.push(<Star size={19} />);
   }
 
   return (
     <div className="flex">
       <span className="pr-2 text-lg font-semibold text-red-500">{rating}</span>
-      <span className="flex pt-1">{stars}</span>
+      <span className="flex pt-1 text-gray-300">{stars}</span>
     </div>
   );
 };

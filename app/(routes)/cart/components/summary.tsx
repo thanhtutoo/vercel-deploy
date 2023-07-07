@@ -11,18 +11,18 @@ import { toast } from "react-hot-toast";
 const Summary = () => {
   const searchParams = useSearchParams();
   const items = useCart((state) => state.items);
-  const removeAll = useCart((state) => state.removeAll);
+  const emptyCart = useCart((state) => state.emptyCart);
 
   useEffect(() => {
     if (searchParams.get("success")) {
       toast.success("Payment completed.");
-      removeAll();
+      emptyCart();
     }
 
     if (searchParams.get("canceled")) {
       toast.error("Something went wrong.");
     }
-  }, [searchParams, removeAll]);
+  }, [searchParams, emptyCart]);
 
   const totalPrice = items.reduce((total, item) => {
     return total + Number(item.price) * item.quantity;
