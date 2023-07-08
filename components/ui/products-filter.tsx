@@ -39,9 +39,11 @@ const CategoryFilter: FC<{
         Category
       </label>
       <Select
+        data-cy-filter="category"
         options={["all", ...categories]}
         value={value}
         id="category"
+        name="category"
         loading={isPending}
         onOptionSelect={handleOptionSelect}
       />
@@ -79,13 +81,13 @@ const PriceRangeFilter: FC<PriceRangeFilterProps> = ({ value, onChange }) => {
     <div className="flex gap-4">
       <div>
         <label
-          data-cy-filter="min-price"
           htmlFor="priceMin"
           className="block text-sm font-medium text-gray-700"
         >
           Min Price
         </label>
         <input
+          data-cy-filter="min-price"
           type="number"
           id="priceMin"
           value={localValue[0]}
@@ -101,6 +103,7 @@ const PriceRangeFilter: FC<PriceRangeFilterProps> = ({ value, onChange }) => {
           Max Price
         </label>
         <input
+          data-cy-filter="max-price"
           type="number"
           id="priceMax"
           value={localValue[1]}

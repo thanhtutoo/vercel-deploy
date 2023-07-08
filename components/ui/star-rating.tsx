@@ -40,7 +40,7 @@ const StarRating: FC<RatingProps> = ({ rating = 0 }) => {
   }
 
   return (
-    <div className="flex">
+    <div className="flex" data-cy-info="star">
       <span className="pr-2 text-lg font-semibold text-red-500">{rating}</span>
       <span className="flex pt-1 text-gray-300">{stars}</span>
     </div>

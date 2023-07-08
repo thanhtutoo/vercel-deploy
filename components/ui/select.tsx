@@ -78,6 +78,7 @@ const Select: React.FC<SelectProps> = ({
           {options.map((option, index) => (
             <div
               key={index}
+              data-cy-id={index}
               className={`cursor-pointer p-2 capitalize ${
                 option === selected ? "bg-blue-200" : ""
               } hover:bg-blue-100`}

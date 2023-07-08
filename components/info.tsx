@@ -38,13 +38,17 @@ const Info: React.FC<InfoProps> = ({ data }) => {
 
         <div className="mt-4">
           <div className="flex items-center">
-            <div className="text-md text-gray-900">Rating: {data?.rating}</div>
-            <div className="ml-2 text-md text-gray-500">
+            <div className="text-md text-gray-900" data-cy-info="rating">
+              Rating: {data?.rating}
+            </div>
+            <div className="ml-2 text-md text-gray-500" data-cy-info="stock">
               ({data?.stock} in stock)
             </div>
           </div>
-          <div className="mt-1 text-md text-gray-500">Brand: {data?.brand}</div>
-          <div className="mt-1 text-md text-gray-500">
+          <div className="mt-1 text-md text-gray-500" data-cy-info="brand">
+            Brand: {data?.brand}
+          </div>
+          <div className="mt-1 text-md text-gray-500" data-cy-info="category">
             Category: {data?.category}
           </div>
         </div>
