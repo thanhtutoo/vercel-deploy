@@ -1,5 +1,9 @@
 import { Product } from "@/types";
-import { getProductsPriceRange, filterProductsByRating } from "./utils";
+import {
+  getProductsPriceRange,
+  filterProductsByRating,
+  filterProductsByPriceRange,
+} from "./utils";
 
 describe("#getProductsPriceRange", () => {
   it("should correctly determine the minimum and maximum price from a list of products", () => {
@@ -72,5 +76,41 @@ describe("#filterProductsByRating", () => {
 
     expect(() => filterProductsByRating(products, 6)).toThrow();
     expect(() => filterProductsByRating(products, 0)).toThrow();
+  });
+});
+
+describe("#filterProductsByPriceRange", () => {
+  const products = [
+    { id: 1, price: 100 },
+    { id: 2, price: 200 },
+    { id: 3, price: 300 },
+    { id: 4, price: 400 },
+  ] as Product[];
+
+  it("returns all products if priceRange is null", () => {
+    expect(filterProductsByPriceRange(products, null)).toEqual(products);
+  });
+
+  it("returns products within a specified price range", () => {
+    expect(filterProductsByPriceRange(products, [150, 350])).toEqual([
+      { id: 2, price: 200 },
+      { id: 3, price: 300 },
+    ]);
+  });
+
+  it("returns no products if none are within the specified price range", () => {
+    expect(filterProductsByPriceRange(products, [500, 600])).toEqual([]);
+  });
+
+  it("returns products at the lower bound of the price range", () => {
+    expect(filterProductsByPriceRange(products, [200, 300])).toEqual([
+      { id: 2, price: 200 },
+    ]);
+  });
+
+  it("excludes products at the upper bound of the price range", () => {
+    expect(filterProductsByPriceRange(products, [100, 200])).toEqual([
+      { id: 1, price: 100 },
+    ]);
   });
 });
