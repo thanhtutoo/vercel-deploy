@@ -37,7 +37,11 @@ const CartItem: React.FC<CartItemProps> = ({ data }) => {
       </div>
       <div className="relative ml-4 flex flex-1 flex-col justify-between sm:ml-6">
         <div className="absolute z-10 right-0 top-0">
-          <IconButton onClick={onRemove} icon={<X size={15} />} />
+          <IconButton
+            onClick={onRemove}
+            icon={<X size={15} />}
+            dataCyInfo={"remove"}
+          />
         </div>
         <div className="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
           <div className="flex justify-between">
@@ -46,9 +50,16 @@ const CartItem: React.FC<CartItemProps> = ({ data }) => {
 
           <div className="mt-1 flex text-sm">
             <p className="text-gray-500">
-              <IconButton onClick={onIncrease} icon={<Plus size={15} />} />
+              <IconButton
+                onClick={onIncrease}
+                icon={<Plus size={15} />}
+                dataCyInfo={"add"}
+              />
             </p>
-            <p className="text-gray-500 pl-4 pt-2 font-semibold">
+            <p
+              className="text-gray-500 pl-4 pt-2 font-semibold"
+              data-cy-info="quantity"
+            >
               {data.quantity}
             </p>
             <p className="pl-4 text-gray-500">

@@ -45,6 +45,7 @@ const Summary = () => {
         </div>
       </div>
       <Button
+        data-cy-button="checkout"
         onClick={onCheckout}
         disabled={items.length === 0}
         className="w-full mt-6"
