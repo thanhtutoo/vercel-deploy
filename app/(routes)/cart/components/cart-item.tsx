@@ -63,7 +63,11 @@ const CartItem: React.FC<CartItemProps> = ({ data }) => {
               {data.quantity}
             </p>
             <p className="pl-4 text-gray-500">
-              <IconButton onClick={onDecrease} icon={<Minus size={15} />} />
+              <IconButton
+                onClick={onDecrease}
+                icon={<Minus size={15} />}
+                dataCyInfo={"remove"}
+              />
             </p>
           </div>
           <Currency value={data.price} />

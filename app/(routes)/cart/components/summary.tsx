@@ -40,18 +40,24 @@ const Summary = () => {
       <h2 className="text-lg font-medium text-gray-900">Order summary</h2>
       <div className="mt-6 space-y-4">
         <div className="flex items-center justify-between border-t border-gray-200 pt-4">
-          <div className="text-base font-medium text-gray-900">Order total</div>
+          <div
+            data-cy="order-total"
+            className="text-base font-medium text-gray-900"
+          >
+            Order total
+          </div>
           <Currency value={totalPrice} />
         </div>
       </div>
-      <Button
-        data-cy-button="checkout"
-        onClick={onCheckout}
-        disabled={items.length === 0}
-        className="w-full mt-6"
-      >
-        Checkout
-      </Button>
+      <div data-cy-button="checkout">
+        <Button
+          onClick={onCheckout}
+          disabled={items.length === 0}
+          className="w-full mt-6"
+        >
+          Checkout
+        </Button>
+      </div>
     </div>
   );
 };
