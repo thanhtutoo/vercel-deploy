@@ -6,7 +6,6 @@ import React from "react";
 Object.defineProperty(global, "navigator", {});
 
 it("should render the component", () => {
-  /* eslint react/jsx-filename-extension:0 */
   const component = render(
     <Button onClick={() => {}} className="flex items-center gap-x-2" />
   );

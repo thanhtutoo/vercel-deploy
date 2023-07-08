@@ -20,7 +20,6 @@ const product = {
 };
 
 it("should render the component", () => {
-  /* eslint react/jsx-filename-extension:0 */
   const component = render(<Info data={product} />);
 
   expect(component).toMatchSnapshot();
